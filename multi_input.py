@@ -1,12 +1,23 @@
-def json_form(target: list[dict]):
+from typing import Any
+
+# Pretty prints json using python dicts
+def json_form(target: list[dict[str, Any]]):
+    # initiate a stringified array with placeholder, perhaps using an f-string would be better?
     out = "[REP\n]"
     dicts = []
+
+    # values that are empty strings show blank value during output, so this guy will place double quotes as default value
+    handle_empty_str = lambda x: "\"\"" if x == "" else x
+
+    # wrap each dicts inside curly braces
     for dic in target:
         dict_text = ""
         dict_text += "\n  {"
-        dict_text += ",".join([f'\n    "{key}": {dic[key]}' for key in dic])
+        # a tab makes 4 spaces tho
+        dict_text += ",".join([f'\n\t"{key}": {handle_empty_str(dic[key])}' for key in dic])
         dict_text += "\n  }"
         dicts.append(dict_text)
+    # return f"[{','.join(dicts)}\n]" it works the same!
     return out.replace("REP", ",".join(dicts))
 
 
