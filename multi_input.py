@@ -1,13 +1,14 @@
-from typing import Any
+from typing import Any, Generator, Callable
+
 
 # Pretty prints json using python dicts
-def json_form(target: list[dict[str, Any]]):
+def json_form(target: list[dict[str, Any]]) -> str:
     # initiate a stringified array with placeholder, perhaps using an f-string would be better?
     out = "[REP\n]"
     dicts = []
 
     # values that are empty strings show blank value during output, so this guy will place double quotes as default value
-    handle_empty_str = lambda x: "\"\"" if x == "" else x
+    handle_empty_str : Callable[[str], str] = lambda x : "\"\"" if x == "" else x
 
     # wrap each dicts inside curly braces
     for dic in target:
@@ -20,8 +21,8 @@ def json_form(target: list[dict[str, Any]]):
     # return f"[{','.join(dicts)}\n]" it works the same!
     return out.replace("REP", ",".join(dicts))
 
-
-def float_range(start: float, stop: float, step=1.0):
+# make yield float numbers within specific boundaries and according to defined pace
+def float_range(start: float, stop: float, step : float=1.0) -> Generator[float, None, None]:
     values = [float(start), float(stop), float(step)]
     str_values = [str(start), str(stop), str(step)]
     highest_num = max(map(lambda s: len(s[s.find("."):]), str_values))
@@ -45,9 +46,9 @@ def float_range(start: float, stop: float, step=1.0):
         raise ValueError("Step parameter must not be 0")
 
 
-def add_to_list(target: list[dict]):
-    def target_function(func):
-        def inner_func(start: float, stop: float, names: list[str], step=1.0):
+def add_to_list(target: list[dict[Any, Any]]) -> Callable[[], Any]:
+    def target_function(func : Callable[[], Any]) -> Any:
+        def inner_func(start: float, stop: float, names: list[str], step : float=1.0) -> list[dict[Any, Any]]:
             count = 0
             for i in float_range(start, stop, step):
                 try:
@@ -65,10 +66,10 @@ def add_to_list(target: list[dict]):
 
 
 if __name__ == "__main__":
-    results = []
+    results : list[dict[str, Any]] = []
 
     @add_to_list(results)
-    def linear_function(x):
+    def linear_function(x : int) -> int:
         return 2 * x
 
     linear_function(0, 4, ["x", "y"], 1)

@@ -71,7 +71,7 @@ print(json_form(results))
 <br>
 
 ### **float_range(start, stop, step)**
-This generator-function behaves like the built in python `range()` function, except for having support for fractions. This function is also being used inside functions decorated by `@add_to_list()` so you can modifie what steps the loop is supposed to take.
+This generator-function behaves like the built in python `range()` function, except for having support for fractions. This function is also being used inside functions decorated by `@add_to_list()` so you can modify what steps the loop is supposed to take.
 ### Input:
 ```py
 from multi_input import float_range
